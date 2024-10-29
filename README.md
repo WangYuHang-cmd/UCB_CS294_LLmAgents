@@ -8,6 +8,6 @@ Check the [course website](https://llmagents-learning.org/f24) for more informat
 
 ## Labs
 
-- [Lab 1](./lab1/Instructions.md)
-- [Lab 2](./lab2/Instructions.md)
-- [Lab 3](./lab3/Instructions.md)
+- [Lab 1](./labs/lab01/Instructions.md)
+- [Lab 2](./labs/lab02/Instructions.md)
+- [Lab 3](./labs/lab03/Instructions.md)
