@@ -1,4 +1,4 @@
-from typing import Dict, List, Optional
+from typing import Dict, List
 from autogen import ConversableAgent
 import sys
 import os
@@ -95,32 +95,16 @@ def calculate_overall_score(restaurant_name: str, food_scores: List[int], custom
     formatted_score = "{:.3f}".format(total)
     return {restaurant_name: formatted_score}
 
-# Agent prompt functions
 def get_data_fetch_agent_prompt(restaurant_query: str) -> str:
-    """Creates prompt for the data fetch agent."""
     return f"""You are a data fetch agent responsible for extracting restaurant names from user queries and fetching their reviews.
 
     Your task:
     1. Analyze the user query: "{restaurant_query}"
     2. Extract the restaurant name from the query
     3. Call the fetch_restaurant_data function with the extracted name
-
-    Important rules:
-    - Only respond with the exact function call needed
-    - Format: fetch_restaurant_data("Restaurant Name")
-    - Handle queries like "How good is X" or "What would you rate Y?"
-    - Preserve restaurant name capitalization if present in query
-    - Do not include any other text or explanations
-
-    Example queries and responses:
-    Query: "How good is Subway as a restaurant"
-    Response: fetch_restaurant_data("Subway")
-
-    Query: "What would you rate In N Out?"
-    Response: fetch_restaurant_data("In N Out")"""
+    """
 
 def get_review_analyzer_prompt() -> str:
-    """Creates prompt for the review analyzer agent."""
     keywords_str = "\n".join(
         f"        - {score}/5: {', '.join(words)}"
         for score, words in SCORE_KEYWORDS.items()
@@ -132,19 +116,14 @@ def get_review_analyzer_prompt() -> str:
     1. Find exactly one keyword for food quality and one for service quality
     2. Map keywords to scores using this exact mapping:
         Food/Service Score Mapping:
-{keywords_str}
     
-    Important rules:
-    - Each review must have exactly two scores (one food, one service)
-    - Use only the exact keywords listed above
-    - Maintain the order of reviews when creating score lists
+    {keywords_str}
     
     Output format must be exactly:
     food_scores = [score1, score2, ...]
     customer_service_scores = [score1, score2, ...]"""
 
 def get_scoring_agent_prompt() -> str:
-    """Creates prompt for the scoring agent."""
     return """You are a scoring agent. Your task is to take the food scores and customer service scores from the previous conversation and calculate the final rating.
 
     Steps:
@@ -152,13 +131,7 @@ def get_scoring_agent_prompt() -> str:
     2. Get the food_scores and customer_service_scores lists from the analyzer
     3. Call calculate_overall_score with these exact parameters
     
-    Function signature:
-    calculate_overall_score(restaurant_name: str, food_scores: List[int], customer_service_scores: List[int])
-    
-    Important:
-    - Use only the scores provided by the review analyzer
-    - Maintain the exact order of scores
-    - Respond only with the function call, no other text"""
+    """
 
 def create_agent(name: str, system_message: str, llm_config: dict) -> ConversableAgent:
     """Helper function to create agents with consistent configuration."""
@@ -187,12 +160,7 @@ def main(user_query: str):
         Follow these steps exactly:
         1. First, ask the data fetch agent to get restaurant reviews using fetch_restaurant_data
         2. Once you have the reviews, send them to the review analyzer to extract scores
-        3. After getting the scores from the analyzer, ask the scoring agent to calculate the final rating using calculate_overall_score
-        
-        Important:
-        - Wait for each agent to complete their task before moving to the next
-        - Pass the complete context from previous conversations to the next agent
-        - Ensure each agent receives the necessary information from previous steps
+        3. After getting the scores from the analyzer, ask the scoring agent to calculate the final rating
         """,
         llm_config
     )
@@ -225,8 +193,6 @@ def main(user_query: str):
         name="fetch_restaurant_data", 
         description="Fetches the reviews for a specific restaurant."
     )
-
-    agents['scorer'].register_for_execution(calculate_overall_score)
     
     # Scoring related
     register_function(
@@ -249,6 +215,7 @@ def main(user_query: str):
             "recipient": agents["analyzer"],
             "message": "Here are the reviews from the data fetch agent. Please analyze them and extract food and service scores. For each review, find the food quality keyword and service quality keyword, then map them to scores 1-5 according to the scoring rules.",
             "summary_method": "last_msg",
+            
             "max_turns": 1
         },
         {
@@ -260,6 +227,7 @@ def main(user_query: str):
     ]
     
     result = entrypoint_agent.initiate_chats(chat_sequence)
+    print(result)
     return result
 
 if __name__ == "__main__":
