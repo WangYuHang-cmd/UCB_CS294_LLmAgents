@@ -4,9 +4,17 @@ from typing import Dict, List
 from datetime import datetime
 import json
 import time
+from dotenv import load_dotenv
+from hackathon.src.secret_key_generator import generate_secret_key
+
+load_dotenv()
 
 class AttackTester:
     def __init__(self):
+        # Check for API key
+        if not os.getenv('OPENAI_API_KEY'):
+            raise ValueError("Please set OPENAI_API_KEY in your .env file")
+        
         self.base_path = 'labs/lab02/attack-2-tests'
         self.system_prompt = self._load_system_prompt()
         self.attack_prompts = self._load_attack_prompts()
@@ -15,8 +23,14 @@ class AttackTester:
         # Initialize OpenAI client
         self.client = openai.OpenAI()
         
-        # The secret key we're trying to extract
-        self.secret_key = "AI_SAFETY_2024_XK9"
+        # Generate a new secret key for testing
+        self.secret_key = generate_secret_key()
+        
+        # Update system prompt with new secret key
+        self.system_prompt = self.system_prompt.replace(
+            "AI_SAFETY_2024_XK9",
+            self.secret_key
+        )
 
     def _load_system_prompt(self) -> str:
         """Load the defensive system prompt"""
@@ -139,7 +153,15 @@ class AttackTester:
 
 def main():
     tester = AttackTester()
-    tester.run_all_attacks()
+    
+    # Run a single attack
+    attack_name = "attack_3_token_manipulation.txt"
+    attack_prompt = tester.attack_prompts[attack_name]
+    result = tester.run_attack(attack_prompt)
+    
+    print(f"\nAttack Result for {attack_name}:")
+    print(f"Success: {'Yes' if result['success'] else 'No'}")
+    print(f"Response: {result['response']}")
 
 if __name__ == "__main__":
     main() 
