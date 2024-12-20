@@ -1,0 +1,3 @@
+[submodule "hackathon/prompt_of_troy"]
+	path = hackathon/prompt_of_troy
+	url = https://github.com/xianminx/prompt_of_troy
