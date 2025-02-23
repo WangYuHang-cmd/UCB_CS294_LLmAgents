@@ -18,8 +18,8 @@ def normalize(name: str) -> str:
     """
     Normalizes restaurant name by converting to lowercase, replacing punctuation with spaces,
     and removing extra spaces.
-    
     Args:
+    
         name (str): Restaurant name to normalize
         
     Returns:
@@ -97,7 +97,7 @@ def calculate_overall_score(restaurant_name: str, food_scores: List[int], custom
 
 def get_data_fetch_agent_prompt(restaurant_query: str) -> str:
     return f"""You are a data fetch agent responsible for extracting restaurant names from user queries and fetching their reviews.
-
+    
     Your task:
     1. Analyze the user query: "{restaurant_query}"
     2. Extract the restaurant name from the query
@@ -151,7 +151,7 @@ def main(user_query: str):
     Returns:
         The result of the agent conversation chain
     """
-    llm_config = {"config_list": [{"model": "gpt-4o-mini", "api_key": os.environ.get("OPENAI_API_KEY")}]}
+    llm_config = {"config_list": [{"model": "gpt-4o", "api_key": os.environ.get("OPENAI_API_KEY")}]}
     
     # Create the entrypoint agent
     entrypoint_agent = create_agent(
@@ -215,7 +215,6 @@ def main(user_query: str):
             "recipient": agents["analyzer"],
             "message": "Here are the reviews from the data fetch agent. Please analyze them and extract food and service scores. For each review, find the food quality keyword and service quality keyword, then map them to scores 1-5 according to the scoring rules.",
             "summary_method": "last_msg",
-            
             "max_turns": 1
         },
         {

@@ -1,7 +1,7 @@
 import sys, os
 import re
 import json
-from main import main 
+from mymain import main 
 from typing import List
 
 class TerminalColors:
@@ -21,8 +21,17 @@ def contains_num_with_tolerance(text: str, pattern: float, tolerance: float=0) -
     nums = [float(num) for num in nums]
     pattern_matches = [num for num in nums if abs(num - pattern) <= tolerance]
     return len(pattern_matches) >= 1
-    
+
+def extract_score(content: str) -> float:
+    # 提取带有3位小数的数字
+    nums = re.findall(r'\d*\.\d{3}', content)
+    if nums:
+        return float(nums[0])
+    return None
+
 def public_tests():
+    # print(os.environ.get("OPENAI_API_KEY"))
+
     queries = [
     "What is the overall score for taco bell?",
     "What is the overall score for In N Out?",
@@ -33,14 +42,23 @@ def public_tests():
     tolerances = [0.2, 0.2, 0.2, 0.15]
     contents = []
     
+    original_stdout = sys.stdout
+    
     for query in queries:
         with open("runtime-log.txt", "w") as f:
             sys.stdout = f
             main(query)
-        with open("runtime-log.txt", "r") as f:
-            contents.append(f.read())
             
-    restore_prints()
+        sys.stdout = original_stdout
+        
+        with open("runtime-log.txt", "r") as f:
+            content = f.read()
+            actual_score = extract_score(content)
+            print(f"\nQuery: {query}")
+            print(f"Expected score: {query_results[queries.index(query)]}")
+            print(f"Your score: {actual_score if actual_score is not None else 'No score found'}")
+            contents.append(content)
+            
     num_passed = 0
     for i, content in enumerate(contents):
         if not contains_num_with_tolerance(content, query_results[i], tolerance=tolerances[i]):
