@@ -1,15 +1,3 @@
-## Course 1
-
-This lecture introduce the 
-
-## Course 2
-
-
-## Course 3
-
-
-## Course 4
-
 
 ## Course 5 Compound AI Systems & the DSPy Framework, Omar Khattab
 
@@ -21,13 +9,13 @@ This lecture introduce the
 
   - The monolithic nature of LMs makes them hard to control, debug and improve
 
-![alt text](image.png)
+![image](/home/henry/Desktop/Drive/LLM/UCB_CS294_LLmAgents/image.png)
 
 ### DsPy
 
 DsPy is kind of natural language Python, 
 
-![alt text](image-1.png)
+<img src="/home/henry/Desktop/Drive/LLM/UCB_CS294_LLmAgents/image-1.png" alt="image-1" style="zoom:50%;" />
 
 
 - multi-hop behavior
@@ -160,7 +148,7 @@ Next step: Grounding
 
 > Grounding: Provide the proposer with more contextual information or examples relevant to the task to help it produce a more focused, higher quality Prompt.
 
-![alt text](image-3.png)
+![image-3](/home/henry/Desktop/Drive/LLM/UCB_CS294_LLmAgents/image-3.png)
 
 3. MIPRO
 
