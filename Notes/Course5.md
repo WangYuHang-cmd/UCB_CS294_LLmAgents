@@ -9,14 +9,13 @@
 
   - The monolithic nature of LMs makes them hard to control, debug and improve
 
-
-<img src="/home/henry/Desktop/LLM/UCB_CS294_LLmAgents/images/image.png" alt="image-1" style="zoom:80%;" />
+<img src="../images/course5_image.png" alt="image-1" style="zoom:80%;" />
 
 ### DsPy
 
 DsPy is kind of natural language Python, 
 
-<img src="/home/henry/Desktop/LLM/UCB_CS294_LLmAgents/images/image-1.png" alt="image-1" style="zoom:50%;" />
+<img src="../images/course5_image-1.png" alt="image-1" style="zoom:50%;" />
 
 
 - multi-hop behavior
@@ -149,7 +148,7 @@ Next step: Grounding
 
 > Grounding: Provide the proposer with more contextual information or examples relevant to the task to help it produce a more focused, higher quality Prompt.
 
-<img src="/home/henry/Desktop/LLM/UCB_CS294_LLmAgents/images/image-3.png" alt="image-1" style="zoom:90%;" />
+<img src="../images/course5_image-3.png" alt="image-1" style="zoom:90%;" />
 
 
 

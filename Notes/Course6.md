@@ -115,7 +115,7 @@ No failures detected.
 ### Code Generation LLM
 
 1. Basic Method: Code geration LM
-    
+   
     1. Feed instruction and code to an LM
 
     2. All serious LMs are trained on code
@@ -195,7 +195,7 @@ Lack of a more flexible interaction: before or after confirming (or rejecting) a
 
 - Fixing Based on Error Messages
 
-![alt text](image-1.png)
+![alt text](../images/Course6_image-1.png)
 
 
 ### Safety
